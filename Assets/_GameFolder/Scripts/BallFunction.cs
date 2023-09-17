@@ -47,7 +47,7 @@ public class BallFunction : MonoBehaviour
         else if (atualPosition == initialPosition)
         {
             isReturning = false;
-            isInPlayerHand = false;
+            isInPlayerHand = true;
         }
         
         if (Input.GetButtonDown("Fire1") && !isBusy && !isReturning)
