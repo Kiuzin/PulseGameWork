@@ -13,6 +13,7 @@ public class BallFunction : MonoBehaviour
     [SerializeField] private bool isFixedOnTarget;
     [SerializeField] private bool isReturning;
     [SerializeField] private bool isInPlayerHand;
+    [SerializeField] private bool isAnimating;
     [SerializeField] private Vector2 targetClickPosition;
     [SerializeField] private Vector2 mousePosition;
     private Vector2 atualPosition;
@@ -67,7 +68,7 @@ public class BallFunction : MonoBehaviour
 
 
         
-        if (Input.GetButtonDown("Fire1") && !isBusy && !isReturning)
+        if (Input.GetButtonDown("Fire1") && !isBusy && !isReturning && !isAnimating)
         {
             if (isInPlayerHand)
             {
@@ -114,16 +115,16 @@ public class BallFunction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D ballCollision)
     {
-        if (ballCollision.CompareTag("Enemy") && col.isTrigger)
+        if (ballCollision.CompareTag("Enemy") && col.isTrigger && !isInPlayerHand)
         {
             Debug.Log("Virou colisor");
             col.isTrigger = false;
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D ballColision)
+    private void OnCollisionStay2D(Collision2D ballCollision)
     {
-        if(ballColision.collider.CompareTag("Player") || ballColision.collider.CompareTag("Enemy"))
+        if(ballCollision.collider.CompareTag("Player") || ballCollision.collider.CompareTag("Enemy"))
         {
             StartCoroutine(BallScaleAnim(timeAnim));
         }
@@ -131,8 +132,13 @@ public class BallFunction : MonoBehaviour
 
     private IEnumerator BallScaleAnim(float time)
     {
+        isAnimating = true;
         transform.DOScale(1.4f, time);
         yield return new WaitForSeconds(time);
         transform.DOScale(0.7f, time);
+        yield return new WaitForSeconds(time);
+        isAnimating = false;
     }
+
+    //pensar na possibilidade de fazer uma mecânica para a bola completamente desancorada do personagem (bola flutuante que segue o player)
 }

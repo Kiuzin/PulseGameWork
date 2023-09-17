@@ -432,6 +432,7 @@ GameObject:
   - component: {fileID: 672610704}
   - component: {fileID: 672610703}
   - component: {fileID: 672610702}
+  - component: {fileID: 672610706}
   m_Layer: 0
   m_Name: Inimigo
   m_TagString: Enemy
@@ -578,6 +579,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &672610706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 672610701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3705f28bc53209346b04b20ff7db816a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
 --- !u!1 &1066692812
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,6 +605,7 @@ GameObject:
   - component: {fileID: 1066692815}
   - component: {fileID: 1066692814}
   - component: {fileID: 1066692813}
+  - component: {fileID: 1066692818}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -613,7 +628,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -756,6 +771,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1066692818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066692812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3705f28bc53209346b04b20ff7db816a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
 --- !u!1 &1332406377
 GameObject:
   m_ObjectHideFlags: 0
@@ -771,7 +799,7 @@ GameObject:
   - component: {fileID: 1332406382}
   m_Layer: 0
   m_Name: ball
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -786,7 +814,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7, y: 0.42695937, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 15810745}
   m_RootOrder: -1
@@ -926,6 +954,7 @@ MonoBehaviour:
   isFixedOnTarget: 0
   isReturning: 0
   isInPlayerHand: 0
+  isAnimating: 0
   targetClickPosition: {x: 0, y: 0}
   mousePosition: {x: 0, y: 0}
 --- !u!1 &1598216953
