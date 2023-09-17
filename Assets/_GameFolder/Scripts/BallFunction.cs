@@ -95,7 +95,7 @@ public class BallFunction : MonoBehaviour
 
     void ThrowBall()
     {
-        Debug.Log("Ta Indo");
+        //Debug.Log("Ta Indo");
         isInPlayerHand = false;
         ballrb.position = Vector2.Lerp(atualPosition, targetClickPosition, Time.deltaTime * throwforce);
         ballrb.transform.parent = null;
@@ -103,10 +103,28 @@ public class BallFunction : MonoBehaviour
 
     void ReturnBall()
     {
-        Debug.Log("Ta retornando");
+        //Debug.Log("Ta retornando");
         isFixedOnTarget = false;
         transform.SetParent(PlayerHand);
         transform.position = Vector2.Lerp(atualPosition, initialPosition, Time.deltaTime * throwforce);
         col.isTrigger = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D ballCollision)
+    {
+        if (ballCollision.CompareTag("Enemy") && col.isTrigger)
+        {
+            Debug.Log("Virou colisor");
+            col.isTrigger = false;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D ballColision)
+    {
+        if(ballColision.collider.CompareTag("Player") || ballColision.collider.CompareTag("Enemy"))
+        {
+            SpriteRenderer sp = GetComponent<SpriteRenderer>();
+            sp.color = Color.blue;
+        }
     }
 }
