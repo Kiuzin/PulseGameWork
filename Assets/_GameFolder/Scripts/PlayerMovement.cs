@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private Transform groundChecker;
     [SerializeField] private float speed = 2f;
     [SerializeField] private float movement;
     [SerializeField] private float jumpforce = 5f;
@@ -19,9 +20,21 @@ public class PlayerMovement : MonoBehaviour
     {
         movement = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && isGrounded())
         {
             rb.AddForce(transform.up * jumpforce, ForceMode2D.Impulse);
+        }
+    }
+
+    private bool isGrounded() //verifica se esta no chao
+    {
+        if (Physics2D.Linecast(transform.position, groundChecker.position, 1 << LayerMask.NameToLayer("Ground")))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

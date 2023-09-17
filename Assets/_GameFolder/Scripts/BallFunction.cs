@@ -7,16 +7,16 @@ public class BallFunction : MonoBehaviour
     [SerializeField] private float throwforce = 10f;
     [SerializeField] private CircleCollider2D col;
     [SerializeField] private Rigidbody2D ballrb;
-    [SerializeField] private Vector2 target;
     [SerializeField] private Transform PlayerHand;
     [SerializeField] private bool isBusy;
     [SerializeField] private bool isFixedOnTarget;
     [SerializeField] private bool isReturning;
     [SerializeField] private bool isInPlayerHand;
-    [SerializeField] private Vector2 atualPosition;
-    [SerializeField] private Vector2 worldPosition;
-    [SerializeField] private Vector2 initialPosition;
-    [SerializeField] private float distanceBetween;
+    [SerializeField] private Vector2 targetClickPosition;
+    [SerializeField] private Vector2 mousePosition;
+    private Vector2 atualPosition;
+    private Vector2 initialPosition;
+    private float distanceBetween;
 
     private void Awake()
     {
@@ -38,25 +38,40 @@ public class BallFunction : MonoBehaviour
 
         //Debug.Log(target);  //debug
 
-        if (atualPosition == target)  //se a posição do objeto for igual a do target, rodará as instruçoes
+        if (isBusy)  //se a booleana estiver ativa
         {
-            //col.isTrigger = false;
-            isFixedOnTarget = true;
-            isBusy = false;
+            distanceBetween = Vector2.Distance(atualPosition, targetClickPosition); //verificará a distancia entre os 2 vetores
+
+            if(distanceBetween <= 0.1f) //se esses vetores estiverem proximos um do outro, rodará as instruções
+            { 
+                col.isTrigger = false;
+                isFixedOnTarget = true;
+                Debug.Log("Chegou e fixou");
+                isBusy = false;
+            }
         }
-        else if (atualPosition == initialPosition)
+        else if (isReturning)
         {
-            isReturning = false;
-            isInPlayerHand = true;
+            distanceBetween = Vector2.Distance(atualPosition, initialPosition);
+
+            if(distanceBetween <= 0.1f)
+            {
+                isInPlayerHand = true;
+                Debug.Log("Parou na mão");
+                isReturning = false;
+                col.isTrigger = true;
+            }
         }
+
+
         
         if (Input.GetButtonDown("Fire1") && !isBusy && !isReturning)
         {
             if (isInPlayerHand)
             {
-                worldPosition = Input.mousePosition;
+                mousePosition = Input.mousePosition;
                 isBusy = true;
-                target = Camera.main.ScreenToWorldPoint(worldPosition); //identifica que o target vai ser baseado na tela de onde esta a camera para o mundo
+                targetClickPosition = Camera.main.ScreenToWorldPoint(mousePosition); //identifica que o target vai ser baseado na tela de onde esta a camera para o mundo
             }
             else if (isFixedOnTarget)
             {
@@ -71,23 +86,9 @@ public class BallFunction : MonoBehaviour
         {
             ThrowBall();
         }
-        if (isFixedOnTarget)
-        {
-            Debug.Log("Ta fixo");
-            
-            col.isTrigger = false;
-        }
         if (isReturning)
         {
             ReturnBall();
-            //StartCoroutine(testeNumber());
-        distanceBetween = Vector2.Distance(atualPosition, initialPosition);
-        }
-        if(isInPlayerHand)
-        {
-            isReturning = false;
-            Debug.Log("Ta Na mão do player");
-            col.isTrigger = true;
         }
         
     }
@@ -96,7 +97,7 @@ public class BallFunction : MonoBehaviour
     {
         Debug.Log("Ta Indo");
         isInPlayerHand = false;
-        ballrb.position = Vector2.Lerp(atualPosition, target, Time.deltaTime * throwforce);
+        ballrb.position = Vector2.Lerp(atualPosition, targetClickPosition, Time.deltaTime * throwforce);
         ballrb.transform.parent = null;
     }
 
@@ -107,12 +108,5 @@ public class BallFunction : MonoBehaviour
         transform.SetParent(PlayerHand);
         transform.position = Vector2.Lerp(atualPosition, initialPosition, Time.deltaTime * throwforce);
         col.isTrigger = true;
-
-
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        
     }
 }
