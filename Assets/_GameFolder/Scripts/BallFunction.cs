@@ -1,10 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using System.Collections;
 
 public class BallFunction : MonoBehaviour
 {
     [SerializeField] private float throwforce = 10f;
+    [SerializeField] private float timeAnim;
     [SerializeField] private CircleCollider2D col;
     [SerializeField] private Rigidbody2D ballrb;
     [SerializeField] private Transform PlayerHand;
@@ -20,6 +21,7 @@ public class BallFunction : MonoBehaviour
 
     private void Awake()
     {
+        
 
         Debug.Log(transform.parent.position);
         ballrb = GetComponent<Rigidbody2D>();
@@ -123,8 +125,14 @@ public class BallFunction : MonoBehaviour
     {
         if(ballColision.collider.CompareTag("Player") || ballColision.collider.CompareTag("Enemy"))
         {
-            SpriteRenderer sp = GetComponent<SpriteRenderer>();
-            sp.color = Color.blue;
+            StartCoroutine(BallScaleAnim(timeAnim));
         }
+    }
+
+    private IEnumerator BallScaleAnim(float time)
+    {
+        transform.DOScale(1.4f, time);
+        yield return new WaitForSeconds(time);
+        transform.DOScale(0.7f, time);
     }
 }

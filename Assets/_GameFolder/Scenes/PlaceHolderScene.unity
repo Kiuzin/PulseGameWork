@@ -918,6 +918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwforce: 10
+  timeAnim: 0.08
   col: {fileID: 0}
   ballrb: {fileID: 0}
   PlayerHand: {fileID: 15810745}
